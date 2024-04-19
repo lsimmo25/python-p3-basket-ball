@@ -1,3 +1,4 @@
+from typing import Dict, List
 def game_dict():
     return {
         "home": {
@@ -182,3 +183,55 @@ def game_dict():
             ]
         }
     }
+
+def get_all_players(game_data: Dict[str, dict]):
+    home_players = game_data["home"]["players"]
+    away_players = game_data["away"]["players"]
+    return home_players + away_players
+
+all_players = get_all_players(game_dict())
+
+def num_points_per_game(player_name: str):
+    player = [p for p in all_players if p["name"] == player_name]
+    return player[0]["points_per_game"]
+
+def player_age(player_name: str):
+    player = [p for p in all_players if p["name"] == player_name]
+    return player[0]["age"]
+
+def team_colors(team_name: str):
+    home = game_dict()["home"]["team_name"]
+    return game_dict()["home"]["colors"] if team_name == home else game_dict()["away"]["colors"]
+
+def team_names() -> List[str]:
+    home = game_dict()["home"]["team_name"]
+    away = game_dict()["away"]["team_name"]
+    teams = list((home, away))
+    return teams
+
+def player_numbers(team_name: str):
+    home_players = game_dict()["home"]["players"]
+    away_players = game_dict()["away"]["players"]
+    jerseys_home = [p["number"] for p in home_players]
+    jerseys_away = [p["number"] for p in away_players]
+
+    return jerseys_home if team_name == "Cleveland Cavaliers" else jerseys_away
+
+def player_stats(player_name: str):
+    return [player for player in all_players if player["name"] == player_name][0]
+
+def average_rebounds_by_shoe_brand():
+    nike = [s["rebounds_per_game"] for s in all_players if s["shoe_brand"] == "Nike"]
+    adidas = [s["rebounds_per_game"] for s in all_players if s["shoe_brand"] == "Adidas"]
+    puma = [s["rebounds_per_game"] for s in all_players if s["shoe_brand"] == "Puma"]
+    jordan = [s["rebounds_per_game"] for s in all_players if s["shoe_brand"] == "Jordan"]
+
+    nike_avg_reb = sum(nike) / len(nike)
+    adidas_avg_reb = sum(adidas) / len(adidas)
+    puma_avg_reb = sum(puma) / len(puma)
+    jordan_avg_reb = sum(jordan) / len(jordan)
+
+    print(f"Nike:  {nike_avg_reb:.2f}")
+    print(f"Adidas:  {adidas_avg_reb:.2f}")
+    print(f"Puma:  {puma_avg_reb:.2f}")
+    print(f"Jordan:  {jordan_avg_reb:.2f}")
